@@ -1,0 +1,14 @@
+body { 
+	font-family: Verdana; 
+	padding-top: 70px; 
+}
+.chi{
+	font-family: "細明體";
+}
+.form-horizontal .control-label{
+   text-align:right !important; 
+}
+.errorMessage{
+	color:red
+}
+

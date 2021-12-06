@@ -1,0 +1,1 @@
+﻿Learning Location <span class="chi">(學習地點)</span>:<?php echo $model->location;?><br>Programme Fee <span class="chi">(課程費用)</span>:HK$ <?php echo $model->formatedcost;?>

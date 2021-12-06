@@ -1,0 +1,81 @@
+function isElementVisible(elementToBeChecked)
+{
+    var TopView = $(window).scrollTop();
+    var BotView = TopView + $(window).height();
+    var TopElement = $(elementToBeChecked).offset().top;
+    var BotElement = TopElement + $(elementToBeChecked).height();
+    return ((BotElement <= BotView) && (TopElement >= TopView));
+}
+function init_select(){
+    var selections = [];
+    $('select option:selected').each(function(){
+        if($(this).val() && $(this).val() != 0)
+            selections.push($(this).val());
+    });
+     //alert(selections );
+     $('select option').each(function() {
+         $(this).attr('disabled', $.inArray($(this).val(),selections)>-1 && !$(this).is(":selected"));
+      });
+}
+
+$(function(){
+$('span.required').remove();
+
+$('.next').click(function(){
+
+  var nextId = $(this).parents('.tab-pane').next().attr("id");
+  $('[href=#'+nextId+']').tab('show');
+  return false;
+  //$("[href=#"+nextId+"]").tab("show");
+});
+$('.back').click(function(){
+
+  var prevId = $(this).parents('.tab-pane').prev().attr("id");
+  $('[href=#'+prevId+']').tab('show');
+  $.scrollTo($(".navbar"), { duration: 0});
+  return false;
+  //$("[href=#"+nextId+"]").tab("show");
+});
+/* $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  
+  //update progress
+  var step = $(e.target).data('step');
+  var percent = (parseInt(step) / 5) * 100;
+  
+  $('.progress-bar').css({width: percent + '%'});
+  $('.progress-bar').text("Step " + step + " of 5");
+  
+  //e.relatedTarget // previous tab
+  
+}) */
+
+$('.first').click(function(){
+
+  $('#myWizard a:first').tab('show')
+
+});
+
+$('#declare').click(function(){
+	if($(this).is(':checked')){
+		$(".stepone").removeClass('disabled');
+	}else{
+		$(".stepone").addClass('disabled');
+	}
+});
+$('#acknowledge').click(function(){
+	if($(this).is(':checked')){
+		$(".next_2").removeClass('disabled');
+	}else{
+		$(".next_2").addClass('disabled');
+	}
+});
+init_select();
+$('select').change(function() {
+
+    init_select();
+});
+$(".navstep").click(function(){
+	return false;
+});
+
+});

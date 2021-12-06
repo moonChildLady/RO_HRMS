@@ -1,0 +1,243 @@
+<a href="<?php echo Yii::app()->createURL('AttendanceRecords/ReportLanding');?>" class="btn btn-primary">Back</a>
+<h3>Late Report <?php echo $_POST['AttendanceRecords']['month'];?></h3>
+<div class="table-responsive">
+<table class="table table-bordered table-striped table-condensed">
+	<tr>
+		<th>Staff Code</th>
+		<th>Name</th>
+		<th>TimeSlot</th>
+		<th>Date Time</th>
+		<th>Status</th>
+		<th>Leave</th>
+		<th>Remark</th>
+	</tr>
+		
+<?php
+$key = array();
+foreach($model as $i=>$staff){
+	$endDate = ($staff->endDate=="")?'2999-12-31':$staff->endDate;
+	if($_POST['AttendanceRecords']['month'] >= $staff->startDate && $_POST['AttendanceRecords']['month'] <= $endDate){
+	
+	
+	$criteria = new CDbCriteria;
+	//$criteria->with = array('staffCode0');
+	$criteria->addCondition("staffCode = :staffCode");
+	//$criteria->select = "DATE_FORMAT(timeRecord, '%Y-%m-%d') as dateRecord";
+	$criteria->addCondition("DATE_FORMAT(timeRecord, '%Y-%m-%d') = :timeRecord");
+	$criteria->params = array(
+		//':endDate'=>$this->endDate,
+		':staffCode'=>$staff->staffCode,
+		':timeRecord'=>$_POST['AttendanceRecords']['month'],
+		
+	);
+	
+	//$criteria->group = "timeRecord ASC, staffCode0.surName ASC, staffCode0.givenName ASC";
+	
+	$attendances = AttendanceRecords::model()->find($criteria);
+	
+	if($attendances){
+	$startTime =  $this->findStaffTimeslot($staff->staffCode, $attendances->timeRecord);
+
+	$firsCLockIn = $this->isFirstClockIn($staff->staffCode, $attendances->timeRecord);
+	unset($criteria);		
+			
+	$criteria = new CDbCriteria;
+	$criteria->addCondition("staffCode = :staffCode");
+	$criteria->addCondition("status = :status");
+	$criteria->addCondition(":date between startDate and endDate");
+	
+	$criteria->params = array(
+		':staffCode'=>$staff->staffCode,
+		':status'=>'ACTIVE',
+		':date'=>date('Y-m-d', strtotime($_POST['AttendanceRecords']['month']))
+		
+	);
+	
+	$TimeSlotStaff = TimeSlotStaff::model()->find($criteria);
+	//Yii::log($staff->staffCode);
+	unset($criteria);
+	$criteria = new CDbCriteria;
+	$criteria->addCondition("staffCode = :staffCode");
+	$criteria->addCondition("status = :status");
+	$criteria->addCondition(":date between startDate and endDate");
+	
+	$criteria->params = array(
+		':staffCode'=>$staff->staffCode,
+		':status'=>'ACTIVE',
+		':date'=>date('Y-m-d', strtotime($_POST['AttendanceRecords']['month']))
+		
+	);
+	
+	$LeaveApplication = LeaveApplication::model()->findAll($criteria);
+			//&& ($TimeSlotStaff->timeSlotGroup == 1 || $TimeSlotStaff->timeSlotGroup == 4 || )
+	//		if(!empty($startTime)){
+	//	if(!in_array($staff->staffCode.$firsCLockIn->timeRecord, $key)){
+	
+?>
+<tr>
+	<td><?php echo $staff->staffCode;?></td>
+	<td><?php echo $staff->staffCode0->surName;?> <?php echo $staff->staffCode0->givenName;?> <?php echo $staff->staffCode0->chineseName;?></td>
+	<td><?php 
+	if($TimeSlotStaff){ 
+	/* unset($criteria);
+	$criteria = new CDbCriteria;
+	$criteria->addCondition("timeSlotGroup = :timeSlotGroup");
+	//$criteria->addCondition("status = :status");
+	//$criteria->addCondition(":date between startDate and endDate");
+	
+	$criteria->params = array(
+		':timeSlotGroup'=>$TimeSlotStaff->timeSlotGroup,
+		//':status'=>'ACTIVE',
+		//':date'=>date('Y-m-d', strtotime($_POST['AttendanceRecords']['month']))
+		
+	);
+	
+	$TimeSlotAissigment = TimeSlotAissigment::model()->findAll($criteria); */
+	//if($TimeSlotAissigment){ 
+	//foreach($TimeSlotAissigment as $i=>$TimeSlot) {
+		
+	?>
+	<?php echo $TimeSlotStaff->timeSlotGroup0->timeSlotGroup0->groupName;?>
+	<?php 
+	//} 
+	//} 
+	}else{ ?>
+	-
+	<?php } ?>
+	</td>
+	<td><?php echo date("H:i:s", strtotime($firsCLockIn->timeRecord));?>(<?php echo empty($startTime[0])?"":$startTime[0];?>)</td>
+	<td>
+	<?php if(!empty($startTime[0]) && $startTime[0] < date("H:i:s", strtotime($firsCLockIn->timeRecord))){ ?>
+		Late
+	<?php }else{ ?>
+		-
+	<?php } ?>
+	</td>
+	<td>
+		<?php if($LeaveApplication){ 
+			foreach($LeaveApplication as $i=>$leave){ ?>
+			
+			<a href="<?php echo Yii::app()->createURL('leaveApplication/ViewApproval/', array('id'=>$leave->id));?>" target="_blank"><?php 
+	echo $leave->refNo;
+	?></a><br>
+	<?php echo $leave->reason->content; ?>
+	<br>From: <?php 
+	echo $leave->StartDateSlot;
+	?><br>
+	To:  <?php 
+	echo $leave->EndDateSlot;
+	?><br>
+	<?php echo $leave->ApprovalStatus;?> 
+		<?php } }else{ ?> 
+		-
+		<?php } ?>
+		
+	</td>
+	<td>
+	
+		
+		<?php 
+		$attendanceTime = $firsCLockIn->timeRecord;
+		$startTime1 = empty($startTime[0])?"":$startTime[0];
+		//echo $attendanceTime." ".$startTime;
+		$datetime1 = date_create($attendanceTime);
+		$datetime2 = date_create(date('Y-m-d', strtotime($attendances->timeRecord))." ".$startTime1);
+		$interval = date_diff($datetime1, $datetime2);
+		$diff_mins = $interval->format('%h');
+		//echo $diff_mins;
+		//echo $attendanceTime." ".$startTime;
+		/* $diff_mins = $attendanceTime-$startTime;
+		$minutes = round(((($diff_mins % 604800) % 86400) % 3600) / 60);  */
+		//echo $startTime1;
+		if($diff_mins >= 5){ 
+		//echo $attendanceTime;
+		?>
+		
+		<?php }else{ ?>
+		-
+		<?php } ?>
+	</td>
+</tr>
+<?php
+				
+				//Yii::log(date('H:i:s', strtotime($firsCLockIn->timeRecord))." |".$startTime[0]);
+	//		$key[] = $staff->staffCode.$firsCLockIn->timeRecord;
+			}else{ 
+			
+			$criteria = new CDbCriteria;
+	$criteria->addCondition("staffCode = :staffCode");
+	$criteria->addCondition("status = :status");
+	$criteria->addCondition(":date between startDate and endDate");
+	
+	$criteria->params = array(
+		':staffCode'=>$staff->staffCode,
+		':status'=>'ACTIVE',
+		':date'=>date('Y-m-d', strtotime($_POST['AttendanceRecords']['month']))
+		
+	);
+	
+	$TimeSlotStaff = TimeSlotStaff::model()->find($criteria);
+	//Yii::log($staff->staffCode);
+	unset($criteria);
+	
+			$criteria = new CDbCriteria;
+	$criteria->addCondition("staffCode = :staffCode");
+	$criteria->addCondition("status = :status");
+	$criteria->addCondition(":date between startDate and endDate");
+	
+	$criteria->params = array(
+		':staffCode'=>$staff->staffCode,
+		':status'=>'ACTIVE',
+		':date'=>date('Y-m-d', strtotime($_POST['AttendanceRecords']['month']))
+		
+	);
+	
+	$LeaveApplication = LeaveApplication::model()->findAll($criteria);
+			
+			
+			?>
+<tr>
+	<td><?php echo $staff->staffCode0->staffCode;?></td>
+	<td><?php echo $staff->staffCode0->surName;?> <?php echo $staff->staffCode0->givenName;?> <?php echo $staff->staffCode0->chineseName;?></td>
+	<td><?php if($TimeSlotStaff){ 
+	
+	?>
+	<?php echo $TimeSlotStaff->timeSlotGroup0->timeSlotGroup0->groupName;?>
+	<?php }else{ ?>
+	-
+	<?php } ?>
+	</td>
+	<td>-</td>
+	<td>-</td>
+	<td>
+		<?php if($LeaveApplication){ 
+			foreach($LeaveApplication as $i=>$leave){ ?>
+			
+			<a href="<?php echo Yii::app()->createURL('leaveApplication/ViewApproval/', array('id'=>$leave->id));?>" target="_blank"><?php 
+	echo $leave->refNo;
+	?></a><br>
+	<?php echo $leave->reason->content; ?>
+	<br>From: <?php 
+	echo $leave->StartDateSlot;
+	?><br>
+	To:  <?php 
+	echo $leave->EndDateSlot;
+	?><br>
+	<?php echo $leave->ApprovalStatus;?> 
+		<?php } }else{ ?> 
+		-
+		<?php } ?>
+		
+	</td>
+	<td>-</td>
+</tr>	
+<?php	}
+	}
+	}
+	//		}
+			
+	//	}
+
+?>
+</table>
+</div>

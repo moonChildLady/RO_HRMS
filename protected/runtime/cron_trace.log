@@ -1,0 +1,23 @@
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW FULL COLUMNS FROM `Users`
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW CREATE TABLE `Users`
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SELECT * FROM `Users` `t`
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW FULL COLUMNS FROM `StaffEmployment`
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW CREATE TABLE `StaffEmployment`
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SELECT * FROM `StaffEmployment` `t` WHERE (staffCode IN (:ycp0, :ycp1, :ycp2, :ycp3, :ycp4, :ycp5, :ycp6, :ycp7, :ycp8, :ycp9, :ycp10, :ycp11, :ycp12, :ycp13, :ycp14, :ycp15, :ycp16, :ycp17, :ycp18, :ycp19, :ycp20, :ycp21, :ycp22, :ycp23, :ycp24, :ycp25, :ycp26, :ycp27, :ycp28, :ycp29, :ycp30, :ycp31, :ycp32, :ycp33, :ycp34, :ycp35, :ycp36, :ycp37, :ycp38, :ycp39, :ycp40, :ycp41, :ycp42, :ycp43, :ycp44, :ycp45, :ycp46, :ycp47, :ycp48, :ycp49, :ycp50, :ycp51, :ycp52, :ycp53, :ycp54, :ycp55, :ycp56, :ycp57, :ycp58, :ycp59, :ycp60, :ycp61, :ycp62, :ycp63, :ycp64, :ycp65, :ycp66, :ycp67, :ycp68, :ycp69, :ycp70, :ycp71, :ycp72, :ycp73, :ycp74, :ycp75, :ycp76, :ycp77, :ycp78, :ycp79, :ycp80, :ycp81, :ycp82, :ycp83, :ycp84, :ycp85, :ycp86, :ycp87, :ycp88, :ycp89, :ycp90, :ycp91, :ycp92, :ycp93, :ycp94, :ycp95, :ycp96, :ycp97, :ycp98, :ycp99, :ycp100, :ycp101, :ycp102, :ycp103, :ycp104, :ycp105, :ycp106, :ycp107, :ycp108, :ycp109, :ycp110, :ycp111, :ycp112, :ycp113, :ycp114, :ycp115, :ycp116, :ycp117, :ycp118, :ycp119, :ycp120, :ycp121, :ycp122, :ycp123, :ycp124, :ycp125, :ycp126, :ycp127, :ycp128, :ycp129, :ycp130, :ycp131, :ycp132, :ycp133, :ycp134, :ycp135, :ycp136, :ycp137, :ycp138, :ycp139, :ycp140, :ycp141, :ycp142, :ycp143, :ycp144, :ycp145, :ycp146, :ycp147, :ycp148, :ycp149, :ycp150, :ycp151, :ycp152, :ycp153, :ycp154, :ycp155, :ycp156, :ycp157, :ycp158, :ycp159, :ycp160, :ycp161, :ycp162, :ycp163, :ycp164, :ycp165, :ycp166, :ycp167, :ycp168, :ycp169, :ycp170, :ycp171, :ycp172, :ycp173, :ycp174, :ycp175, :ycp176, :ycp177, :ycp178, :ycp179, :ycp180, :ycp181, :ycp182, :ycp183, :ycp184, :ycp185, :ycp186, :ycp187, :ycp188, :ycp189, :ycp190, :ycp191, :ycp192, :ycp193, :ycp194, :ycp195)) AND (staffCode NOT IN (:ycp196, :ycp197, :ycp198, :ycp199))
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW FULL COLUMNS FROM `LeaveApplication`
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW CREATE TABLE `LeaveApplication`
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SELECT * FROM `LeaveApplication` `t` WHERE ((staffCode = :staffCode) AND (status = :status)) AND (:date between startDate and endDate) LIMIT 1
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW FULL COLUMNS FROM `AttendanceRecords`
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW CREATE TABLE `AttendanceRecords`
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SELECT * FROM `AttendanceRecords` `t` WHERE ((staffCode = :staffCode) AND (lower(type) = :type)) AND (DATE_FORMAT(timeRecord, '%Y-%m-%d') = :timeRecord) LIMIT 1
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW FULL COLUMNS FROM `AttendanceRemarks`
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW CREATE TABLE `AttendanceRemarks`
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SELECT * FROM `AttendanceRemarks` `t` WHERE ((staffCode = :staffCode) AND (:date = DATE_FORMAT(timeRecord, '%Y-%m-%d'))) AND (remark != '') LIMIT 1
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SELECT * FROM `LeaveApplication` `t` WHERE ((staffCode = :staffCode) AND (status = :status)) AND (:date between startDate and endDate) LIMIT 1
+2021/12/06 08:30:01 [trace] [system.db.CDbCommand] Querying SQL: SELECT * FROM `AttendanceRecords` `t` WHERE ((staffCode = :staffCode) AND (lower(type) = :type)) AND (DATE_FORMAT(timeRecord, '%Y-%m-%d') = :timeRecord) LIMIT 1
+2021/12/06 10:00:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW FULL COLUMNS FROM `starSystem`
+2021/12/06 10:00:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW CREATE TABLE `starSystem`
+2021/12/06 10:00:01 [trace] [system.db.CDbCommand] Querying SQL: SELECT * FROM `starSystem` `t` WHERE status = :status
+2021/12/06 12:00:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW FULL COLUMNS FROM `starSystem`
+2021/12/06 12:00:01 [trace] [system.db.CDbCommand] Querying SQL: SHOW CREATE TABLE `starSystem`
+2021/12/06 12:00:01 [trace] [system.db.CDbCommand] Querying SQL: SELECT * FROM `starSystem` `t` WHERE status = :status

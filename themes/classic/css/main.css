@@ -1,0 +1,24 @@
+@media (min-width: 1200px){
+.container {
+    width: 1900px;
+}
+}
+body { 
+	font-family: Verdana; 
+	padding-top: 70px; 
+}
+.chi{
+	font-family: "細明體";
+}
+.form-horizontal .control-label{
+   text-align:left !important; 
+}
+.errorMessage{
+	color:red
+}
+.table tbody>tr>td.vcenter{
+    vertical-align: middle;
+}
+.ct-form-control{
+	min-width: 10%
+}
