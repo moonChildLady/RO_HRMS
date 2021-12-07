@@ -1,7 +1,7 @@
 # RO HRMS
 
 ### Introduction
-HR Management system
+HR Management system for a HK contractor company
 
 ### Features
 1. employee management
